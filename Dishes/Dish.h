@@ -7,6 +7,7 @@ class Dish
 {
 public:
     Dish(const std::string& title, const double& price, const double& weight);
+    Dish();
 
     std::string getTile() const;
     double getWeight() const;
@@ -16,7 +17,7 @@ public:
     void setWeight(const double& new_weight);
     void setPrice(const double& new_price);
 private:
-    std::string title = "Unknown";
+    std::string title;
     double weight;
     double price;
 };
