@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(
         buffet main.cpp
         Menu.h Menu.cpp
-        TotalBill.h TotalBill.cpp
+        Bill.h Bill.cpp
         People/Human.h People/Human.cpp
         People/Inspector.h People/Inspector.cpp
         People/Seller.h People/Seller.cpp
