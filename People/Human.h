@@ -16,7 +16,7 @@ public:
             const std::string& first_name, const std::string& second_name, const std::string& last_name,
             const std::string& organization, const std::string& post
             );
-private:
+protected:
     FullName fullName;
     std::string organization;
     std::string post;
