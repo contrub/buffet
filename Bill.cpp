@@ -12,7 +12,12 @@ void Bill::addDish(Dish* dish)
     billList.push_back(dish);
 }
 
-void Bill::removeDish(int index)
+Dish* Bill::getDish(const int& index)
+{
+    return billList[index];
+}
+
+void Bill::removeDish(const int& index)
 {
     billList.erase(billList.begin() + index);
 }

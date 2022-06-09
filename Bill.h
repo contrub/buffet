@@ -16,7 +16,8 @@ public:
     ~Bill();
 
     void addDish(Dish* dish);
-    void removeDish(int index);
+    Dish* getDish(const int& index);
+    void removeDish(const int& index);
 
     double getTotalWeight() const;
     double getTotalPrice() const;
