@@ -24,7 +24,7 @@ Dish* Menu::getDish(const int& chosen) const
         throw std::invalid_argument("Error..\nIndex out of range ...");
     }
 
-    return getMenu()[chosen];
+    return menu[chosen];
 }
 
 std::ostream& operator << (std::ostream& out, const Menu& menu) {
