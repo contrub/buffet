@@ -6,13 +6,3 @@ Visitor::Visitor(
 ) :
         Human(first_name, second_name, last_name, organization, post)
 {}
-
-Bill Visitor::getBill() const
-{
-    return totalBill;
-}
-
-void Visitor::completeBill(Dish* dish)
-{
-    totalBill.addDish(dish);
-}
