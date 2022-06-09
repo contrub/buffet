@@ -8,21 +8,22 @@ Inspector::Inspector(
 
 Dish* Inspector::chooseDish(const Menu& menu)
 {
-    std::cout << "Choose dish from the list(enter number):\n";
+    std::cout << "Choose dish from the list (enter number):\n";
 
     int i = 1;
+
+    std::cout << std::string(50, '\n');
 
     for (Dish* dish : menu.getMenu()) {
         std::cout << i++ << ". " << *dish;
     }
 
+    Dish* dish;
     int chosen;
     std::cin >> chosen;
 
-    Dish* dish;
-
     try {
-        dish = menu.getDish(chosen);
+        dish = menu.getDish(chosen - 1);
         std::cout << "Successfully added - " << *dish << std::endl;
     } catch (std::exception& ex) {
         dish = new Dish();
@@ -35,4 +36,5 @@ Dish* Inspector::chooseDish(const Menu& menu)
 double Inspector::checkPayment(Visitor* visitor)
 {
     visitor;
+    return 0;
 }
