@@ -15,6 +15,7 @@ public:
     std::vector<Dish*> getMenu() const;
 
     void addDish(Dish*);
+    Dish* getDish(const int&) const;
 private:
     std::vector<Dish*> menu;
 };
