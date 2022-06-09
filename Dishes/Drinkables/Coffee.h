@@ -6,7 +6,7 @@
 #define BUFFET_COFFE_H
 
 
-#include "Dish.h"
+#include "../Dish.h"
 
 class Coffee : public Dish
 {
