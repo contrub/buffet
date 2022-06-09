@@ -1,23 +1,23 @@
-#include "TotalBill.h"
+#include "Bill.h"
 
-TotalBill::~TotalBill()
+Bill::~Bill()
 {
     for (auto dish : billList) {
         delete dish;
     }
 }
 
-void TotalBill::addDish(Dish* dish)
+void Bill::addDish(Dish* dish)
 {
     billList.push_back(dish);
 }
 
-void TotalBill::removeDish(int index)
+void Bill::removeDish(int index)
 {
     billList.erase(billList.begin() + index);
 }
 
-double TotalBill::getTotalPrice() const
+double Bill::getTotalPrice() const
 {
     double totalPrice = 0;
 
@@ -28,7 +28,7 @@ double TotalBill::getTotalPrice() const
     return totalPrice;
 }
 
-double TotalBill::getTotalWeight() const
+double Bill::getTotalWeight() const
 {
     double totalWeight = 0;
 
@@ -39,17 +39,21 @@ double TotalBill::getTotalWeight() const
     return totalWeight;
 }
 
-std::vector<Dish*> TotalBill::getBillList() const
+std::vector<Dish*> Bill::getBillList() const
 {
     return billList;
 }
 
-std::ostream& operator << (std::ostream& out, const TotalBill& totalBill) {
-    out << "Totalbill\n";
+std::ostream& operator << (std::ostream& out, const Bill& totalBill) {
+    out << "Total bill (title - weight - price)\n";
+
+    int i = 1;
 
     for (Dish* dish : totalBill.getBillList()) {
-        out << *dish;
+        out << i++ << ". " << *dish;
     }
+
+    out << "Total price is " << totalBill.getTotalPrice() << std::endl;
 
     return out;
 }

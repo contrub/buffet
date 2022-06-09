@@ -9,11 +9,11 @@
 
 #include "Dishes/Dish.h"
 
-class TotalBill
+class Bill
 {
 public:
-    TotalBill() = default;
-    ~TotalBill();
+    Bill() = default;
+    ~Bill();
 
     void addDish(Dish* dish);
     void removeDish(int index);
@@ -25,6 +25,6 @@ private:
     std::vector<Dish*> billList;
 };
 
-std::ostream& operator << (std::ostream& out, const TotalBill& totalBill);
+std::ostream& operator << (std::ostream& out, const Bill& totalBill);
 
 #endif //UNTITLED_MENU_H
