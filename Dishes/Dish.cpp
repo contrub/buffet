@@ -7,7 +7,7 @@ Dish::Dish(const std::string& title, const double& weight, const double& price) 
     title(title), weight(weight), price(price)
 {
     if (title.empty()) {
-        throw std::invalid_argument("Error..\nTitle cannot be null");
+        throw std::invalid_argument("Error..\nTitle cannot be empty");
     }
 
     if (weight < 0) {
@@ -18,6 +18,10 @@ Dish::Dish(const std::string& title, const double& weight, const double& price) 
         throw std::invalid_argument("Error..\nPrice cannot be less than 0");
     }
 }
+
+Dish::Dish()  :
+    title("Unknown"), weight(0), price(0)
+{}
 
 std::string Dish::getTile() const
 {
@@ -49,8 +53,8 @@ void Dish::setPrice(const double& new_price)
     this->price = new_price;
 }
 std::ostream& operator << (std::ostream& out, const Dish& dish) {
-    out << dish.getTile() << " "
-        << "(" << dish.getWeight() << ")"
+    out << dish.getTile()
+        << " - " << dish.getWeight()
         << " - " << dish.getPrice()
         << std::endl;
 
