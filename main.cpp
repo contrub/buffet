@@ -54,7 +54,7 @@ int main() {
 
     int variant = 0;
 
-    auto* seller = new Seller("test11", "test12", "test13", "buffet", buffetMenu);
+    auto* seller = new Seller("test11", "test12", "test13", "buffet", buffetMenu, 123, 543);
     auto* inspector = new Inspector("test21", "test22", "test23", "buffet");
     auto* visitor = new Visitor("test31", "test32", "test33", "Office", "Office Worker");
 
@@ -65,19 +65,22 @@ int main() {
 
         switch (variant) {
             case 1:
+                // visitor take menu;
                 seller->getMenu();
                 break;
             case 2:
                 // seller->completeBill(visitor, inspector->chooseDish(buffetMenu));
+                seller->completeBill();
                 break;
             case 3:
                 // seller->removeFromBill(visitor, inspector->chooseDish(buffetMenu));
+                seller->removeFromBill();
                 break;
             case 4:
                 // seller->payBill(visitor, inspector->checkPayment(visitor));
                 break;
             case 5:
-                seller->getBill(visitor);
+                seller->getBill();
                 break;
             default:
                 break;
