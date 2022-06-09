@@ -12,13 +12,22 @@
 class Seller : public Human
 {
 public:
-    Seller(const std::string&, const std::string&, const std::string&, const std::string&, const Menu& menu);
+    Seller(
+            const std::string& first_name, const std::string& second_name, const std::string& last_name,
+            const std::string& post, const Menu& menu,
+            const double& own_funds, const double& cash_money
+            );
 
     void getMenu();
-    void completeBill(Visitor*, Dish*);
-    void getBill(Visitor*);
-private:
+    void completeBill();
+    void removeFromBill();
+    void getBill();
+
+protected:
+    Bill totalBill;
     Menu menu;
+    double own_funds;
+    double cash_money;
 };
 
 
