@@ -10,6 +10,7 @@ add_executable(
         People/Human.h People/Human.cpp
         People/Inspector.h People/Inspector.cpp
         People/Seller.h People/Seller.cpp
+        People/GreedSeller.h People/GreedSeller.cpp
         People/Visitor.h People/Visitor.cpp
         Dishes/Dish.h Dishes/Dish.cpp
         Dishes/Cake.h Dishes/Cake.cpp
