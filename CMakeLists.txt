@@ -16,4 +16,7 @@ add_executable(
         Dishes/Cake.h Dishes/Cake.cpp
         Dishes/Pizza.h Dishes/Pizza.cpp
         Dishes/Salad.h Dishes/Salad.cpp
+        Dishes/Cola.h Dishes/Cola.cpp
+        Dishes/Coffee.h Dishes/Coffee.cpp
+        Dishes/Tea.h Dishes/Tea.cpp
 )
