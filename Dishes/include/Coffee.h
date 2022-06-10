@@ -1,12 +1,8 @@
-//
-// Created by onufr on 10.06.2022.
-//
-
 #ifndef BUFFET_COFFE_H
 #define BUFFET_COFFE_H
 
 
-#include "../Dish.h"
+#include "../include/Dish.h"
 
 class Coffee : public Dish
 {

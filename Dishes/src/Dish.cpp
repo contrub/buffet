@@ -1,7 +1,8 @@
-#include "Dish.h"
+#include "include/Dish.h"
 
 #include <iostream>
 #include <stdexcept>
+#include <iomanip>
 
 Dish::Dish(const std::string& title, const double& weight, const double& price) :
     title(title), weight(weight), price(price)
@@ -53,9 +54,9 @@ void Dish::setPrice(const double& new_price)
     this->price = new_price;
 }
 std::ostream& operator << (std::ostream& out, const Dish& dish) {
-    out << dish.getTile()
-        << " - " << dish.getWeight()
-        << " - " << dish.getPrice()
+    out << std::left << ' ' << std::setw(18) << dish.getTile()
+        << std::left << ' ' << std::setw(8) << dish.getWeight()
+        << std::left << ' ' << std::setw(8) << dish.getPrice()
         << std::endl;
 
     return out;

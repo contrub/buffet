@@ -1,4 +1,6 @@
-#include "Menu.h"
+#include "../../Menu.h"
+
+#include <iomanip>
 
 Menu::~Menu()
 {
@@ -21,14 +23,17 @@ void Menu::addDish(Dish* dish)
 Dish* Menu::getDish(const int& chosen) const
 {
     if (chosen < 0 || chosen > getMenu().size()) {
-        throw std::invalid_argument("Error..\nIndex out of range ...");
+        throw std::invalid_argument("Dish not found");
     }
 
     return menu[chosen];
 }
 
 std::ostream& operator << (std::ostream& out, const Menu& menu) {
-    out << "Menu (title - weight - price)\n";
+    out << std::left << '|' << std::string(6, ' ') << std::setw(12) << "Title" << '|'
+              << std::left << std::setw(8) << "Weight" << '|'
+              << std::left << std::setw(8) << "Price" << '|'
+              << std::endl << '+' << std::string(38, '=') << '+' << std::endl;
 
     for (Dish* dish : menu.getMenu()) {
         out << *dish;

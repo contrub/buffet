@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <map>
 
-#include "Dishes/Dish.h"
+#include "Dishes/include/Dish.h"
 
 class Bill
 {

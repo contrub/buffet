@@ -1,7 +1,7 @@
 #ifndef BUFFET_COLA_H
 #define BUFFET_COLA_H
 
-#include "../Dish.h"
+#include "Dish.h"
 
 class Cola : public Dish
 {

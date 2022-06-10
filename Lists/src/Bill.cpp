@@ -1,4 +1,4 @@
-#include "Bill.h"
+#include "../include/Bill.h"
 
 Bill::~Bill()
 {

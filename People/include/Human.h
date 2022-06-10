@@ -9,17 +9,22 @@ struct FullName {
     std::string last_name;
 };
 
+
 class Human
 {
 public:
     Human(
             const std::string& first_name, const std::string& second_name, const std::string& last_name,
-            const std::string& organization, const std::string& post
+            const std::string& organization, const std::string& post, const double& own_funds
             );
+
+    double getOwnFunds() const;
+    void spendOwnFunds(const double& funds);
 protected:
     FullName fullName;
     std::string organization;
     std::string post;
+    double own_funds;
 };
 
 

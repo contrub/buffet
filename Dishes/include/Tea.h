@@ -2,7 +2,7 @@
 #define BUFFET_TEA_H
 
 
-#include "../Dish.h"
+#include "../include/Dish.h"
 
 class Tea : public Dish
 {

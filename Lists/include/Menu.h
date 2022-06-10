@@ -1,7 +1,7 @@
 #ifndef BUFFET_MENU_H
 #define BUFFET_MENU_H
 
-#include "Dishes/Dish.h"
+#include "Dishes/include/Dish.h"
 
 #include <vector>
 #include <iostream>

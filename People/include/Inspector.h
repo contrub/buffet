@@ -4,11 +4,12 @@
 #include <string>
 
 #include "Human.h"
-#include "Visitor.h"
+#include "../Visitor.h"
+#include "../Seller.h"
 
-#include "../Dishes/Dish.h"
+#include "../../Dishes/include/Dish.h"
 
-#include "../Menu.h"
+#include "../../Menu.h"
 
 class Inspector : public Human
 {
@@ -18,9 +19,12 @@ public:
             const std::string& organization
             );
 
-    Dish* chooseDish(const Menu&);
+    void commitCashMoney(const double& money);
+    double getCashMoney() const;
 
-    double checkPayment(Visitor*);
+    void checkPayment(Seller* seller);
+private:
+    double cash_money;
 };
 
 

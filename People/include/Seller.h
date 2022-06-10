@@ -3,30 +3,32 @@
 
 #include <string>
 
-#include "Human.h"
+#include "include/Human.h"
 #include "Visitor.h"
 
-#include "../Dishes/Dish.h"
+#include "../Dishes/include/Dish.h"
 #include "../Menu.h"
 
 class Seller : public Human
 {
+friend class Inspector;
 public:
     Seller(
             const std::string& first_name, const std::string& second_name, const std::string& last_name,
-            const std::string& post, const Menu& menu,
-            const double& own_funds, const double& cash_money
+            const std::string& organization, const Menu& menu, const double& own_funds, const double& cash_money
             );
 
     void getMenu();
     void completeBill();
     void removeFromBill();
     void getBill();
+    virtual void payBill(Visitor* visitor);
+    double getCashMoney() const;
 
 protected:
-    Bill totalBill;
+    int currentBillIndex = -1;
+    std::vector<Bill*> bills;
     Menu menu;
-    double own_funds;
     double cash_money;
 };
 
