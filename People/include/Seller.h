@@ -30,10 +30,11 @@ public:
     virtual void payBill(Visitor* visitor);
 
     friend std::istream& operator >> (std::istream& is, Human& human);
+private:
+    Menu menu;
 protected:
     double cash_money = 0;
     std::vector<Bill*> bills;
-    Menu menu;
     int current_bill = 0;
 };
 
