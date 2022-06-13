@@ -1,7 +1,7 @@
 #ifndef BUFFET_MENU_H
 #define BUFFET_MENU_H
 
-#include "Dishes/include/Dish.h"
+#include "Dish.h"
 
 #include <vector>
 #include <iostream>
@@ -14,12 +14,13 @@ public:
 
     std::vector<Dish*> getMenu() const;
 
+    Dish* getDish(const int& index) const;
     void addDish(Dish*);
-    Dish* getDish(const int&) const;
+    void removeDish(Dish* dish);
+
+    friend std::ostream& operator << (std::ostream& out, const Menu& menu);
 private:
     std::vector<Dish*> menu;
 };
-
-std::ostream& operator << (std::ostream& out, const Menu& menu);
 
 #endif //BUFFET_MENU_H
