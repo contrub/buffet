@@ -1,4 +1,4 @@
-#include "../Visitor.h"
+#include "Visitor.h"
 
 Visitor::Visitor(
         const std::string& first_name, const std::string& second_name, const std::string& last_name,
@@ -14,4 +14,10 @@ void Visitor::checkOwnFunds() const
 
     std::cout << "For continue please press any key...";
     getchar();
+}
+
+std::istream& operator>>(std::istream& is, Visitor& visitor) {
+    is >> static_cast<Human&>(visitor);
+
+    return is;
 }
