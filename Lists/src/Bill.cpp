@@ -1,64 +1,136 @@
-#include "../include/Bill.h"
+#include "Dish.h"
+#include "Bill.h"
+
+#include <iostream>
+#include <iomanip>
+#include <map>
 
 Bill::~Bill()
 {
-    for (auto dish : billList) {
-        delete dish;
+    for (auto bill: bill_list) {
+        delete bill.first;
     }
+
+    bill_list.clear();
 }
 
-void Bill::addDish(Dish* dish)
+std::map<Dish*, int> Bill::getBillList() const
 {
-    billList.push_back(dish);
+    return bill_list;
 }
 
 Dish* Bill::getDish(const int& index)
 {
-    return billList[index];
+    auto it = bill_list.begin();
+    std::advance(it, index);
+
+    if (it == bill_list.end()) {
+        throw std::invalid_argument("Error...\nDish not found\n");
+    }
+
+    return it->first;
 }
 
-void Bill::removeDish(const int& index)
+bool Bill::getPayStatus() const
 {
-    billList.erase(billList.begin() + index);
+    return is_paid;
 }
 
 double Bill::getTotalPrice() const
 {
-    double totalPrice = 0;
+    double total_price = 0;
 
-    for (auto dish : billList) {
-        totalPrice += dish->getPrice();
+    for (auto const& dish : bill_list) {
+        total_price += dish.first->getPrice() * dish.second;
     }
 
-    return totalPrice;
+    return total_price;
 }
 
-double Bill::getTotalWeight() const
+void Bill::addDish(Dish* dish)
 {
-    double totalWeight = 0;
-
-    for (auto dish : billList) {
-        totalWeight += dish->getWeight();
+    if (dish == nullptr) {
+        throw std::invalid_argument("Error...\nDish is empty");
     }
 
-    return totalWeight;
+    if (bill_list.find(dish) == bill_list.end()) {
+        bill_list.insert({dish, 1});
+    } else {
+        bill_list[dish]++;
+    }
 }
 
-std::vector<Dish*> Bill::getBillList() const
+void Bill::addDishes(Dish* dish, const int& amount)
 {
-    return billList;
-}
-
-std::ostream& operator << (std::ostream& out, const Bill& totalBill) {
-    out << "Total bill (title - weight - price)\n";
-
-    int i = 1;
-
-    for (Dish* dish : totalBill.getBillList()) {
-        out << i++ << ". " << *dish;
+    if (dish == nullptr) {
+        throw std::invalid_argument("Error...\nDish is empty");
     }
 
-    out << "Total price is " << totalBill.getTotalPrice() << std::endl;
+    if (bill_list.find(dish) == bill_list.end()) {
+        bill_list.insert({dish, amount});
+    } else {
+        bill_list[dish] += amount;
+    }
+}
+
+void Bill::removeDish(Dish* dish)
+{
+    if (dish == nullptr) {
+        throw std::invalid_argument("Error...\nDish is empty");
+    }
+
+    auto it = bill_list.find(dish);
+
+    if (it == bill_list.end()) {
+        throw std::invalid_argument("Dish not found");
+    }
+
+    if (it->second > 1) {
+        it->second--;
+    } else {
+        bill_list.erase(it);
+    }
+}
+
+void Bill::removeDishes(Dish* dish, const int& amount)
+{
+    if (dish == nullptr) {
+        throw std::invalid_argument("Error...\nDish is empty");
+    }
+
+    auto it = bill_list.find(dish);
+
+    if (it == bill_list.end()) {
+        throw std::invalid_argument("Dish not found");
+    }
+
+    if (it->second < amount) {
+        throw std::invalid_argument("Error..\nNumber of dishes less than requested amount");
+    }
+
+    if (it->second == amount) {
+        bill_list.erase(it);
+    } else {
+        bill_list[dish] -= amount ;
+    }
+}
+
+void Bill::changePayStatus()
+{
+    this->is_paid = !is_paid;
+}
+
+std::ostream& operator << (std::ostream& out, const Bill& bill) {
+    out << std::endl << '+' << std::string(48, '=') << '+' << std::endl
+        << std::left << '|' << std::string(2, ' ') << std::setw(3) << 'N' << '|'
+        << std::left << std::string(5, ' ') << std::setw(10) << "Title" << '|'
+        << std::left << std::string(2, ' ') << std::setw(8) << "Weight" << '|'
+        << std::left << std::string(5, ' ') << std::setw(10) << "Price" << '|'
+        << std::endl << '+' << std::string(48, '=') << '+' << std::endl;
+
+    for (auto dish : bill.getBillList()) {
+        out << std::left << std::string(2, ' ') << std::setw(5) << dish.second << *dish.first;
+    }
 
     return out;
 }
