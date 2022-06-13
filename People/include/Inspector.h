@@ -1,15 +1,13 @@
 #ifndef BUFFET_INSPECTOR_H
 #define BUFFET_INSPECTOR_H
 
-#include <string>
-
 #include "Human.h"
-#include "../Visitor.h"
-#include "../Seller.h"
+#include "Visitor.h"
+#include "Seller.h"
+#include "Dish.h"
+#include "Menu.h"
 
-#include "../../Dishes/include/Dish.h"
-
-#include "../../Menu.h"
+#include <string>
 
 class Inspector : public Human
 {
@@ -19,12 +17,7 @@ public:
             const std::string& organization
             );
 
-    void commitCashMoney(const double& money);
-    double getCashMoney() const;
-
     void checkPayment(Seller* seller);
-private:
-    double cash_money;
 };
 
 
