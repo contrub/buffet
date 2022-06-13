@@ -1,13 +1,12 @@
 #ifndef BUFFET_SELLER_H
 #define BUFFET_SELLER_H
 
-#include <string>
-
-#include "include/Human.h"
+#include "Human.h"
 #include "Visitor.h"
+#include "Menu.h"
+#include "Bill.h"
 
-#include "../Dishes/include/Dish.h"
-#include "../Menu.h"
+#include <string>
 
 class Seller : public Human
 {
@@ -15,21 +14,27 @@ friend class Inspector;
 public:
     Seller(
             const std::string& first_name, const std::string& second_name, const std::string& last_name,
-            const std::string& organization, const Menu& menu, const double& own_funds, const double& cash_money
+            const std::string& organization, const Menu& menu, const double& own_funds
             );
+    ~Seller() = default;
 
-    void getMenu();
+    void greetVisitor(Visitor* visitor);
+    void sayGoodBye(Visitor* visitor);
+
+    void informMenu();
+    void informBill();
+
+    void createBill();
     void completeBill();
     void removeFromBill();
-    void getBill();
     virtual void payBill(Visitor* visitor);
-    double getCashMoney() const;
 
+    friend std::istream& operator >> (std::istream& is, Human& human);
 protected:
-    int currentBillIndex = -1;
+    double cash_money = 0;
     std::vector<Bill*> bills;
     Menu menu;
-    double cash_money;
+    int current_bill = 0;
 };
 
 
