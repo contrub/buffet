@@ -7,7 +7,8 @@ class Dish
 {
 public:
     Dish(const std::string& title, const double& price, const double& weight);
-    Dish();
+    Dish() = default;
+    ~Dish() = default;
 
     std::string getTile() const;
     double getWeight() const;
@@ -16,12 +17,15 @@ public:
     void setTitle(const std::string& new_title);
     void setWeight(const double& new_weight);
     void setPrice(const double& new_price);
+
+    static bool checkInfo(const std::string& title, const double& weight, const double& price);
+
+    friend std::istream& operator >> (std::istream& is, Dish& dish);
+    friend std::ostream& operator << (std::ostream& os, const Dish& dish);
 private:
     std::string title;
-    double weight;
-    double price;
+    double weight = 0;
+    double price = 0;
 };
-
-std::ostream& operator << (std::ostream& out, const Dish& dish);
 
 #endif //BUFFET_DISH_H

@@ -1,4 +1,4 @@
-#include "include/Dish.h"
+#include "Dish.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -19,10 +19,6 @@ Dish::Dish(const std::string& title, const double& weight, const double& price) 
         throw std::invalid_argument("Error..\nPrice cannot be less than 0");
     }
 }
-
-Dish::Dish()  :
-    title("Unknown"), weight(0), price(0)
-{}
 
 std::string Dish::getTile() const
 {
@@ -53,11 +49,38 @@ void Dish::setPrice(const double& new_price)
 {
     this->price = new_price;
 }
-std::ostream& operator << (std::ostream& out, const Dish& dish) {
-    out << std::left << ' ' << std::setw(18) << dish.getTile()
-        << std::left << ' ' << std::setw(8) << dish.getWeight()
-        << std::left << ' ' << std::setw(8) << dish.getPrice()
+
+bool Dish::checkInfo(const std::string& title, const double& weight, const double& price)
+{
+    if (title.empty()) return false;
+    if (weight < 0 || price < 0) return false;
+
+    return true;
+}
+
+std::istream& operator >> (std::istream& is, Dish& dish)
+{
+    std::string tmp_title;
+    double tmp_weight, tmp_price;
+
+    is >> tmp_title >> tmp_weight >> tmp_price;
+
+    if (!Dish::checkInfo(tmp_title, tmp_weight, tmp_price)) {
+        throw std::invalid_argument("Human validation error");
+    }
+
+    dish.title = tmp_title;
+    dish.weight = tmp_weight;
+    dish.price = tmp_price;
+
+    return is;
+}
+
+std::ostream& operator << (std::ostream& os, const Dish& dish) {
+    os << std::left << ' ' << std::setw(18) << dish.getTile()
+        << std::left << ' ' << std::setw(10) << dish.getWeight()
+        << std::left << ' ' << std::setw(10) << dish.getPrice()
         << std::endl;
 
-    return out;
+    return os;
 }
