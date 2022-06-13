@@ -1,8 +1,7 @@
-#ifndef BUFFET_COFFE_H
-#define BUFFET_COFFE_H
+#ifndef BUFFET_COFFEE_H
+#define BUFFET_COFFEE_H
 
-
-#include "../include/Dish.h"
+#include "Dish.h"
 
 class Coffee : public Dish
 {
@@ -12,4 +11,4 @@ public:
 
 
 
-#endif //BUFFET_COFFE_H
+#endif //BUFFET_COFFEE_H

@@ -1,7 +1,7 @@
 #ifndef BUFFET_PIZZA_H
 #define BUFFET_PIZZA_H
 
-#include "include/Dish.h"
+#include "Dish.h"
 
 class Pizza : public Dish
 {

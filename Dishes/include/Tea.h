@@ -1,8 +1,7 @@
 #ifndef BUFFET_TEA_H
 #define BUFFET_TEA_H
 
-
-#include "../include/Dish.h"
+#include "Dish.h"
 
 class Tea : public Dish
 {
