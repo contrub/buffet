@@ -3,20 +3,27 @@ project(buffet)
 
 set(CMAKE_CXX_STANDARD 14)
 
+include_directories(
+        People/include People/src
+        Dishes/include Dishes/src
+        Lists/include Lists/src
+)
+
 add_executable(
         buffet main.cpp
-        Menu.h Menu.cpp
-        Bill.h Bill.cpp
-        People/Human.h People/Human.cpp
-        People/Inspector.h People/Inspector.cpp
-        People/Seller.h People/Seller.cpp
-        People/GreedSeller.h People/GreedSeller.cpp
-        People/Visitor.h People/Visitor.cpp
-        Dishes/Dish.h Dishes/Dish.cpp
-        Dishes/Cake.h Dishes/Cake.cpp
-        Dishes/Pizza.h Dishes/Pizza.cpp
-        Dishes/Salad.h Dishes/Salad.cpp
-        Dishes/Cola.h Dishes/Cola.cpp
-        Dishes/Coffee.h Dishes/Coffee.cpp
-        Dishes/Tea.h Dishes/Tea.cpp
+        Dishes/include/Cake.h Dishes/src/Cake.cpp
+        Dishes/include/Coffee.h Dishes/src/Coffee.cpp
+        Dishes/include/Cola.h Dishes/src/Cola.cpp
+        Dishes/include/Dish.h Dishes/src/Dish.cpp
+        Dishes/include/Pizza.h Dishes/src/Pizza.cpp
+        Dishes/include/Salad.h Dishes/src/Salad.cpp
+        Dishes/include/Tea.h Dishes/src/Tea.cpp
+        Lists/include/Bill.h Lists/src/Bill.cpp
+        Lists/include/Menu.h Lists/src/Menu.cpp
+        People/include/GreedSeller.h People/src/GreedSeller.cpp
+        People/include/Human.h People/src/Human.cpp
+        People/include/InattentiveSeller.h People/src/InattentiveSeller.cpp
+        People/include/Inspector.h People/src/Inspector.cpp
+        People/include/Seller.h People/src/Seller.cpp
+        People/include/Visitor.h People/src/Visitor.cpp
 )
