@@ -16,7 +16,7 @@ public:
 
     void checkOwnFunds() const;
 
-    friend std::istream& operator>>(std::istream& is, Visitor& visitor);
+    friend std::istream& operator >> (std::istream& is, Visitor& visitor);
 };
 
 
