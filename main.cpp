@@ -1,18 +1,27 @@
-#include "People/Inspector.h"
-#include "People/Visitor.h"
-#include "People/Seller.h"
+#include "Inspector.h"
+#include "Visitor.h"
+#include "Seller.h"
+#include "GreedSeller.h"
+#include "InattentiveSeller.h"
 
-#include "Dishes/Dish.h"
-#include "Dishes/Cake.h"
-#include "Dishes/Pizza.h"
-#include "Dishes/Salad.h"
+#include "Dish.h"
+#include "Cake.h"
+#include "Pizza.h"
+#include "Salad.h"
+#include "Cola.h"
+#include "Tea.h"
+#include "Coffee.h"
 
 #include "Menu.h"
 
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <unistd.h>
+#include <algorithm>
 
-int get_variant(int count) {
+int getVariant(const int& count)
+{
     int variant;
     std::string s;
     getline(std::cin, s);
@@ -24,69 +33,161 @@ int get_variant(int count) {
 
     return variant;
 }
-void print_menu() {
-    std::cout << std::string(50, '\n');
-    std::cout << "1. Print menu\n";
-    std::cout << "2. Add dish\n";
-    std::cout << "3. Remove dish\n";
-    std::cout << "4. Pay for bill\n";
-    std::cout << "5. Get complete bill\n";
-    std::cout << "6. EXIT" << "\n";
+void printMenu()
+{
+    std::cout << std::string(50, '\n')
+              << "1. Print menu\n"
+              << "2. Add dish\n"
+              << "3. Remove dish\n"
+              << "4. Check own funds\n"
+              << "5. Get complete bill\n"
+              << "6. Pay for bill\n"
+              << "7. Leave buffet" << "\n";
 }
 
-int main() {
-    Menu buffetMenu;
+void getMenu(const std::string& file_name, Menu& menu)
+{
+    std::vector<std::string> dishTypes { "Cake", "Coffee", "Cola", "Pizza", "Salad", "Tea" };
+    std::ifstream file(file_name);
+    std::string line;
 
-    buffetMenu.addDish(new Cake("Muffin", 23, 0.120));
-    buffetMenu.addDish(new Cake("Cupcake", 38, 0.110));
-    buffetMenu.addDish(new Cake("Mini Cupcake", 21, 0.74));
-    buffetMenu.addDish(new Cake("Pound Cake", 165, 0.411));
+    if (file.fail()) {
+        std::cerr << "Unable to open the file " << file_name << std::endl;
+        return;
+    }
 
-    buffetMenu.addDish(new Pizza("Sicilian Pizza", 123, 1.23));
-    buffetMenu.addDish(new Pizza("Chicago Pizza", 143, 1.04));
-    buffetMenu.addDish(new Pizza("Detroit Pizza", 135, 0.907));
-    buffetMenu.addDish(new Pizza("Greek Pizza", 129, 0.853));
+    while (std::getline(file, line)) {
+        std::stringstream lineStream(line);
 
-    buffetMenu.addDish(new Salad("Caesar", 35, 0.08));
-    buffetMenu.addDish(new Salad("Greek", 32, 0.105));
-    buffetMenu.addDish(new Salad("Italian", 42, 0.240));
-    buffetMenu.addDish(new Salad("Southwestern", 45, 0.1));
+        if (line.empty()) return;
 
-    int variant = 0;
+        std::string cell;
+        Dish* dish;
+        std::string dish_type, dish_title, tmp_dish_price, tmp_dish_weight;
 
-    auto* seller = new Seller("test11", "test12", "test13", "buffet", buffetMenu, 123, 543);
-    auto* inspector = new Inspector("test21", "test22", "test23", "buffet");
-    auto* visitor = new Visitor("test31", "test32", "test33", "Office", "Office Worker");
+        std::getline(lineStream, dish_type, ',');
+        std::getline(lineStream, dish_title, ',');
+        std::getline(lineStream, tmp_dish_price, ',');
+        std::getline(lineStream, tmp_dish_weight, ',');
 
-    do
-    {
-        print_menu();
-        variant = get_variant(6);
+        double dish_price = std::stod(tmp_dish_price);
+        double dish_weight = std::stod(tmp_dish_weight);
 
-        switch (variant) {
+        auto it = find(dishTypes.begin(), dishTypes.end(), dish_type);
+        int index = it - dishTypes.begin();
+
+        switch (index) {
+            case 0:
+                dish = new Cake(dish_title, dish_price, dish_weight);
+                break;
             case 1:
-                // visitor take menu;
-                seller->getMenu();
+                dish = new Coffee(dish_title, dish_price, dish_weight);
                 break;
             case 2:
-                // seller->completeBill(visitor, inspector->chooseDish(buffetMenu));
-                seller->completeBill();
+                dish = new Cola(dish_title, dish_price, dish_weight);
                 break;
             case 3:
-                // seller->removeFromBill(visitor, inspector->chooseDish(buffetMenu));
-                seller->removeFromBill();
+                dish = new Pizza(dish_title, dish_price, dish_weight);
                 break;
             case 4:
-                // seller->payBill(visitor, inspector->checkPayment(visitor));
+                dish = new Salad(dish_title, dish_price, dish_weight);
                 break;
             case 5:
-                seller->getBill();
+                dish = new Tea(dish_title, dish_price, dish_weight);
                 break;
             default:
+                dish = new Dish();
                 break;
         }
 
-    } while (variant != 6);
+        if (dish->getTile().empty()) continue;
+        menu.addDish(dish);
+    }
+}
+
+Seller* callSeller(const int& visitor_number, std::vector<Seller*> sellersList) {
+    if (visitor_number % 2 == 0) return sellersList[1];
+    if (visitor_number % 3 == 0) return sellersList[2];
+
+    return sellersList[0];
+}
+
+class Menu;
+
+int main() {
+    Menu buffetMenu;
+    getMenu("menu.csv", buffetMenu);
+
+    int visitorsNumber;
+    std::vector<Visitor*> visitorsList;
+    std::vector<Seller*> sellersList = {
+            new Seller("Eduard", "Anatolievich", "Lukin", "Buffet", buffetMenu, 132),
+            new GreedSeller("Timofey", "Petrovich", "Abramov", "Buffet", buffetMenu, 234),
+            new InattentiveSeller("Anton", "Grigorievich", "Korolev", "Buffet", buffetMenu, 42)
+    };
+
+    std::cout << "Input visitor number\n";
+    std::cin >> visitorsNumber;
+
+    for (int i = 0; i < visitorsNumber; i++) {
+        std::cout << "Visitor #" << i + 1 << std::endl;
+        try {
+            auto* new_visitor = new Visitor();
+            new_visitor->init();
+            visitorsList.push_back(new_visitor);
+        } catch (const std::exception& ex) {
+            std::cout << ex.what();
+            sleep(2);
+        }
+    }
+
+    Inspector* inspector;
+    Visitor* visitor;
+    Seller* seller;
+
+    inspector = new Inspector("Khariton", "Mikhailovich", "Eliseev", "Inspector Business");
+    int variant;
+    getchar();
+
+    for (int i = 0; i < visitorsList.size(); i++) {
+        visitor = visitorsList[i];
+        seller = callSeller(i + 1, sellersList);
+
+        seller->greetVisitor(visitor);
+        seller->createBill();
+
+        do
+        {
+            printMenu();
+            variant = getVariant(7);
+
+            switch (variant) {
+                case 1:
+                    seller->informMenu();
+                    break;
+                case 2:
+                    seller->completeBill();
+                    break;
+                case 3:
+                    seller->removeFromBill();
+                    break;
+                case 4:
+                    visitor->checkOwnFunds();
+                    break;
+                case 5:
+                    seller->informBill();
+                    break;
+                case 6:
+                    seller->payBill(visitor);
+                    inspector->checkPayment(seller);
+                    break;
+                default:
+                    break;
+            }
+        } while (variant != 7);
+
+        seller->sayGoodBye(visitor);
+    }
 
     return 0;
 }
