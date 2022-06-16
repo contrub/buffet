@@ -10,9 +10,10 @@ public:
             const std::string& first_name, const std::string& second_name, const std::string& last_name,
             const std::string& organization, const Menu& menu, const double& own_funds
     );
+    InattentiveSeller() = default;
 
     void payBill(Visitor* visitor) override;
-    double loseMoney(const double& money);
+    double loseMoney();
 };
 
 #endif //BUFFET_INATTENTIVESELLER_H
