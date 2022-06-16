@@ -16,7 +16,8 @@ public:
             const std::string& first_name, const std::string& second_name, const std::string& last_name,
             const std::string& organization, const Menu& menu, const double& own_funds
             );
-    ~Seller() = default;
+    Seller() = default;
+    ~Seller();
 
     void greetVisitor(Visitor* visitor);
     void sayGoodBye(Visitor* visitor);
@@ -35,7 +36,7 @@ private:
 protected:
     double cash_money = 0;
     std::vector<Bill*> bills;
-    int current_bill = 0;
+    int current_bill_number = 0;
 };
 
 
