@@ -9,7 +9,7 @@ Menu::~Menu()
         delete dish;
     }
 
-    menu.clear();
+    // menu.clear();
 }
 
 std::vector<Dish*> Menu::getMenu() const
@@ -47,6 +47,7 @@ void Menu::removeDish(Dish* dish)
         throw std::invalid_argument("Dish not found");
     }
 
+    delete dish;
     menu.erase(it);
 }
 
