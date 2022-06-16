@@ -13,22 +13,21 @@ void InattentiveSeller::payBill(Visitor* visitor)
     std::string response;
 
     try {
-        if (bills[current_bill - 1]->getTotalPrice() == 0) {
+        if (bills[current_bill_number - 1]->getTotalPrice() == 0) {
             throw std::invalid_argument("Total bill is empty");
         }
 
-        if (bills[current_bill - 1]->getTotalPrice() > visitor->getOwnFunds()) {
+        if (bills[current_bill_number - 1]->getTotalPrice() > visitor->getOwnFunds()) {
             throw std::invalid_argument("Payment cancelled\nInsufficient funds");
         }
 
-        visitor->changeFunds(bills[current_bill - 1]->getTotalPrice());
+        visitor->changeFunds(bills[current_bill_number - 1]->getTotalPrice());
 
-        double bill_price = bills[current_bill - 1]->getTotalPrice();
-        double lost_money = loseMoney(bill_price);
+        double lost_money = loseMoney();
 
-        cash_money += bills[current_bill - 1]->getTotalPrice() - lost_money;
+        cash_money += bills[current_bill_number - 1]->getTotalPrice() - lost_money;
 
-        bills[current_bill - 1]->changePayStatus();
+        bills[current_bill_number - 1]->changePayStatus();
         response += "Successfully paid!";
     } catch (const std::exception& ex) {
         response = ex.what();
@@ -41,8 +40,9 @@ void InattentiveSeller::payBill(Visitor* visitor)
     sleep(2);
 }
 
-double InattentiveSeller::loseMoney(const double& money)
+double InattentiveSeller::loseMoney()
 {
+    double bill_total_price = bills[current_bill_number - 1]->getTotalPrice();
     srand(time(nullptr));
-    return ((money / 4) * ((double)rand() / (double)RAND_MAX));
+    return ((bill_total_price / 4) * ((double)rand() / (double)RAND_MAX));
 }
