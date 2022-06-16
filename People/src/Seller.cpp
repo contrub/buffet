@@ -5,7 +5,6 @@
 #include <iostream>
 #include <unistd.h>
 #include <string>
-#include <utility>
 #include <iomanip>
 
 Seller::Seller(
@@ -13,6 +12,13 @@ Seller::Seller(
         const std::string& organization, const Menu& menu, const double& own_funds) :
         Human(first_name, second_name, last_name, organization, "seller", own_funds), menu(menu)
 {}
+
+Seller::~Seller()
+{
+    for (auto bill : bills) {
+        delete bill;
+    }
+}
 
 void Seller::greetVisitor(Visitor* visitor)
 {
@@ -49,10 +55,11 @@ void Seller::informBill()
 {
     std::cout << std::string(50, '\n');
 
-    if (bills[current_bill - 1]->getTotalPrice() == 0) {
+    if (bills[current_bill_number - 1]->getTotalPrice() == 0) {
         std::cout << "Bill is empty\n";
     } else {
-        std::cout << *bills[current_bill - 1];
+        std::cout << *bills[current_bill_number - 1]
+                  << "Total price - " << bills[current_bill_number - 1]->getTotalPrice() << "\n";
     }
 
     std::cout << "For continue please press any key...";
@@ -62,18 +69,18 @@ void Seller::informBill()
 void Seller::createBill()
 {
     bills.push_back(new Bill());
-    current_bill++;
+    current_bill_number++;
 }
 
 void Seller::completeBill()
 {
     std::cout << std::string(50, '\n') << std::endl
-              << std::endl << '+' << std::string(48, '=') << '+' << std::endl
-              << std::left << '|' << std::string(2, ' ') << std::setw(3) << '#' << '|'
-              << std::left << std::string(5, ' ') << std::setw(10) << "Title" << '|'
+              << std::endl << '+' << std::string(46, '=') << '+' << std::endl
+              << std::left << '|' << std::string(1, ' ') << std::setw(2) << '#' << '|'
+              << std::left << std::string(7, ' ') << std::setw(12) << "Title" << '|'
               << std::left << std::string(2, ' ') << std::setw(8) << "Weight" << '|'
-              << std::left << std::string(5, ' ') << std::setw(10) << "Price" << '|'
-              << std::endl << '+' << std::string(48, '=') << '+' << std::endl;
+              << std::left << std::string(3, ' ') << std::setw(8) << "Price" << '|'
+              << std::endl << '+' << std::string(46, '=') << '+' << std::endl;
 
     int i = 1;
     for (auto dish : menu.getMenu()) {
@@ -100,11 +107,11 @@ void Seller::completeBill()
         }
 
         if (amount > 1) {
-            bills[current_bill - 1]->addDishes(dish, amount);
+            bills[current_bill_number - 1]->addDishes(dish, amount);
             response = "Successfully added " + dish->getTile()
                      + " (" + std::to_string(amount) + " pieces)\n";
         } else if (amount == 1) {
-            bills[current_bill - 1]->addDish(dish);
+            bills[current_bill_number - 1]->addDish(dish);
             response = "Successfully added " + dish->getTile() + "\n";
         } else {
             response = "Nothing added\n";
@@ -121,7 +128,7 @@ void Seller::completeBill()
 
 void Seller::removeFromBill()
 {
-    if (bills[current_bill - 1]->getBillList().empty()) {
+    if (bills[current_bill_number - 1]->getBillList().empty()) {
         std::cout << std::string(50, '\n') << "Bill list is empty\n";
         std::cout.flush();
         sleep(2);
@@ -142,7 +149,7 @@ void Seller::removeFromBill()
               << std::endl << '+' << std::string(53, '=') << '+' << std::endl;
 
 
-    for (auto dish : (bills[current_bill - 1 ]->getBillList())) {
+    for (auto dish : (bills[current_bill_number - 1 ]->getBillList())) {
         std::cout << std::left << std::string(2, ' ') << std::setw(5) << i++ << dish.second << "  " << *dish.first;
     }
 
@@ -153,7 +160,7 @@ void Seller::removeFromBill()
     std::cin >> chosen;
 
     try {
-        Dish* dish = bills[current_bill - 1]->getDish(chosen - 1);
+        Dish* dish = bills[current_bill_number - 1]->getDish(chosen - 1);
 
         int amount;
 
@@ -162,11 +169,11 @@ void Seller::removeFromBill()
         std::cin >> amount;
 
         if (amount > 1) {
-            bills[current_bill - 1]->removeDishes(dish, amount);
+            bills[current_bill_number - 1]->removeDishes(dish, amount);
             response = "Successfully removed " + dish->getTile()
                      + " (" + std::to_string(amount) + " pieces)\n";
         } else if (amount == 1) {
-            bills[current_bill - 1]->removeDish(dish);
+            bills[current_bill_number - 1]->removeDish(dish);
             response = "Successfully removed " + dish->getTile() + "\n";
         } else {
             response = "Nothing removed\n";
@@ -186,18 +193,18 @@ void Seller::payBill(Visitor* visitor)
     std::string response;
 
     try {
-        if (bills[current_bill - 1]->getTotalPrice() == 0) {
+        if (bills[current_bill_number - 1]->getTotalPrice() == 0) {
             throw std::invalid_argument("Total bill is empty");
         }
 
-        if (bills[current_bill - 1]->getTotalPrice() > visitor->getOwnFunds()) {
+        if (bills[current_bill_number - 1]->getTotalPrice() > visitor->getOwnFunds()) {
             throw std::invalid_argument("Payment cancelled\nInsufficient funds");
         }
 
-        visitor->changeFunds(- bills[current_bill - 1]->getTotalPrice());
-        cash_money += bills[current_bill - 1]->getTotalPrice();
+        visitor->changeFunds(- bills[current_bill_number - 1]->getTotalPrice());
+        cash_money += bills[current_bill_number - 1]->getTotalPrice();
 
-        bills[current_bill - 1]->changePayStatus();
+        bills[current_bill_number - 1]->changePayStatus();
         response += "Successfully paid!";
     } catch (const std::exception& ex) {
         response = ex.what();
