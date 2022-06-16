@@ -33,7 +33,7 @@ int getVariant(const int& count)
 
     return variant;
 }
-void printMenu()
+void displayPossibleActions()
 {
     std::cout << std::string(50, '\n')
               << "1. Print menu\n"
@@ -45,7 +45,7 @@ void printMenu()
               << "7. Leave buffet" << "\n";
 }
 
-void getMenu(const std::string& file_name, Menu& menu)
+void parseMenu(const std::string& file_name, Menu& menu)
 {
     std::vector<std::string> dishTypes { "Cake", "Coffee", "Cola", "Pizza", "Salad", "Tea" };
     std::ifstream file(file_name);
@@ -105,29 +105,28 @@ void getMenu(const std::string& file_name, Menu& menu)
     }
 }
 
-Seller* callSeller(const int& visitor_number, std::vector<Seller*> sellersList) {
-    if (visitor_number % 2 == 0) return sellersList[1];
-    if (visitor_number % 3 == 0) return sellersList[2];
+Seller* callSeller(const int& visitor_number, std::vector<Seller*> sellers_list) {
+    if (visitor_number % 2 == 0) return sellers_list[1];
+    if (visitor_number % 3 == 0) return sellers_list[2];
 
-    return sellersList[0];
+    return sellers_list[0];
 }
-
-class Menu;
 
 int main() {
     Menu buffetMenu;
-    getMenu("menu.csv", buffetMenu);
+    parseMenu("menu.csv", buffetMenu);
 
     int visitorsNumber;
     std::vector<Visitor*> visitorsList;
-    std::vector<Seller*> sellersList = {
-            new Seller("Eduard", "Anatolievich", "Lukin", "Buffet", buffetMenu, 132),
-            new GreedSeller("Timofey", "Petrovich", "Abramov", "Buffet", buffetMenu, 234),
-            new InattentiveSeller("Anton", "Grigorievich", "Korolev", "Buffet", buffetMenu, 42)
+    vector<Seller*> sellersList = {
+            new Seller("Eduard", "Natanovich", "Luk in", "Buffet", buffetMenu, 134),
+            new GreedSeller("Timofei", "Petrovich", "Abram", "Buffet", buffetMenu, 234),
+            new InattentiveSeller("Anton", "Grigoriev", "Korolyov", "Buffet", buffetMenu, 42)
     };
 
     std::cout << "Input visitor number\n";
     std::cin >> visitorsNumber;
+    std::cin.ignore();
 
     for (int i = 0; i < visitorsNumber; i++) {
         std::cout << "Visitor #" << i + 1 << std::endl;
@@ -135,17 +134,18 @@ int main() {
             auto* new_visitor = new Visitor();
             new_visitor->init();
             visitorsList.push_back(new_visitor);
+            if (i != visitorsNumber - 1) getchar();
         } catch (const std::exception& ex) {
             std::cout << ex.what();
             sleep(2);
         }
     }
 
-    Inspector* inspector;
     Visitor* visitor;
     Seller* seller;
 
-    inspector = new Inspector("Khariton", "Mikhailovich", "Eliseev", "Inspector Business");
+    Inspector* inspector;
+    inspector = new Inspector("Harrington", "Mikhailovich", "Elise", "Inspector Business", 124);
     int variant;
     getchar();
 
@@ -153,12 +153,13 @@ int main() {
         visitor = visitorsList[i];
         seller = callSeller(i + 1, sellersList);
 
+        inspector->commitCash(seller);
         seller->greetVisitor(visitor);
         seller->createBill();
 
         do
         {
-            printMenu();
+            displayPossibleActions();
             variant = getVariant(7);
 
             switch (variant) {
