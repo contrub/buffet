@@ -17,7 +17,7 @@ public:
             std::string  organization, std::string  job_post, const double& own_funds
             );
     Human() = default;
-    ~Human() = default;
+    virtual ~Human() = default;
 
     FullName getFullName() const;
     std::string getOrganization() const;
