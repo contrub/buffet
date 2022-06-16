@@ -47,30 +47,32 @@ void Human::init()
 {
     std::string tmp_first_name, tmp_second_name, tmp_last_name, tmp_job_post, tmp_organization;
     double tmp_own_funds;
+    std::cout << "Input first name\n";
+    std::getline(std::cin, tmp_first_name);
 
-    std::cout << "Input full name (seperated by spaces)\n";
-    std::cin >> tmp_first_name >> tmp_second_name >> tmp_last_name;
+    std::cout << "Input second name\n";
+    std::getline(std::cin, tmp_second_name);
 
-    while (tmp_first_name.empty()) {
-        std::cout << "First name cannot be empty. Try again\n";
-        std::cin >> tmp_first_name;
+    std::cout << "Input last name\n";
+    std::getline(std::cin, tmp_last_name);
+
+    while(!(Human::checkInfo(tmp_first_name, tmp_second_name, tmp_last_name))) {
+        std::cout << "First name & second name & last name cannot be empty!\n";
+        std::cout << "Input first name\n";
+        std::getline(std::cin, tmp_first_name);
+
+        std::cout << "Input second name\n";
+        std::getline(std::cin, tmp_second_name);
+
+        std::cout << "Input last name\n";
+        std::getline(std::cin, tmp_last_name);
     }
-
-    while (tmp_second_name.empty()) {
-        std::cout << "Second name cannot be empty. Try again\n";
-        std::cin >> tmp_first_name;
-    }
-
-    while (tmp_last_name.empty()) {
-        std::cout << "Last name cannot be empty. Try again\n";
-        std::cin >> tmp_first_name;
-    }
-
-    std::cout << "Input own funds\n";
-    std::cin >> tmp_own_funds;
 
     std::cout << "Input organization\n";
-    std::cin >> tmp_organization;
+    std::getline(std::cin, tmp_organization);
+
+    std::cout << "Input job post\n";
+    std::getline(std::cin, tmp_job_post);
 
     std::cout << "Input own funds\n";
     std::cin >> tmp_own_funds;
