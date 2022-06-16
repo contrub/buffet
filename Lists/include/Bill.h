@@ -11,10 +11,11 @@ class Bill
 {
 public:
     Bill() = default;
-    ~Bill();
+    ~Bill() = default;
 
     std::map<Dish*, int> getBillList() const;
-    Dish* getDish(const int& index);
+    Dish* getDish(const int& index) const;
+    int getDishAmount(const int& index) const;
     bool getPayStatus() const;
     double getTotalPrice() const;
 

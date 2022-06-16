@@ -5,21 +5,12 @@
 #include <iomanip>
 #include <map>
 
-Bill::~Bill()
-{
-    for (auto bill: bill_list) {
-        delete bill.first;
-    }
-
-    bill_list.clear();
-}
-
 std::map<Dish*, int> Bill::getBillList() const
 {
     return bill_list;
 }
 
-Dish* Bill::getDish(const int& index)
+Dish* Bill::getDish(const int& index) const
 {
     auto it = bill_list.begin();
     std::advance(it, index);
@@ -29,6 +20,18 @@ Dish* Bill::getDish(const int& index)
     }
 
     return it->first;
+}
+
+int Bill::getDishAmount(const int& index) const
+{
+    auto it = bill_list.begin();
+    std::advance(it, index);
+
+    if (it == bill_list.end()) {
+        throw std::invalid_argument("Error...\nDish not found\n");
+    }
+
+    return it->second;
 }
 
 bool Bill::getPayStatus() const
@@ -122,10 +125,10 @@ void Bill::changePayStatus()
 
 std::ostream& operator << (std::ostream& out, const Bill& bill) {
     out << std::endl << '+' << std::string(48, '=') << '+' << std::endl
-        << std::left << '|' << std::string(2, ' ') << std::setw(3) << 'N' << '|'
-        << std::left << std::string(5, ' ') << std::setw(10) << "Title" << '|'
+        << std::left << '|' << std::string(1, ' ') << std::setw(2) << 'N' << '|'
+        << std::left << std::string(7, ' ') << std::setw(12) << "Title" << '|'
         << std::left << std::string(2, ' ') << std::setw(8) << "Weight" << '|'
-        << std::left << std::string(5, ' ') << std::setw(10) << "Price" << '|'
+        << std::left << std::string(4, ' ') << std::setw(9) << "Price" << '|'
         << std::endl << '+' << std::string(48, '=') << '+' << std::endl;
 
     for (auto dish : bill.getBillList()) {
