@@ -7,6 +7,11 @@ class Salad : public Dish
 {
 public:
     Salad(const std::string& title, const double& price, const double& weight);
+    Salad() = default;
+
+    std::string getAmountString() const override;
+protected:
+    std::string weight_units = "g";
 };
 
 

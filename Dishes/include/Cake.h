@@ -7,6 +7,11 @@ class Cake : public Dish
 {
 public:
     Cake(const std::string& title, const double& price, const double& weight);
+    Cake() = default;
+
+    std::string getAmountString() const override;
+protected:
+    std::string weight_units = "g";
 };
 
 

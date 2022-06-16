@@ -7,6 +7,11 @@ class Pizza : public Dish
 {
 public:
     Pizza(const std::string& title, const double& price, const double& weight);
+    Pizza() = default;
+
+    std::string getAmountString() const override;
+protected:
+    std::string weight_units = "cm";
 };
 
 

@@ -7,6 +7,11 @@ class Tea : public Dish
 {
 public:
     Tea(const std::string& title, const double& price, const double& weight);
+    Tea() = default;
+
+    std::string getAmountString() const override;
+protected:
+    std::string weight_units = "ml";
 };
 
 

@@ -6,7 +6,12 @@
 class Coffee : public Dish
 {
 public:
-    Coffee(const std::string& title, const double& price, const double& weight);
+    Coffee(const std::string& title, const double& price,const double& weight);
+    Coffee() = default;
+
+     std::string getAmountString() const override;
+protected:
+    std::string weight_units = "ml";
 };
 
 
