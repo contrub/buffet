@@ -3,9 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 #include <iomanip>
+#include <cmath>
 
-Dish::Dish(const std::string& title, const double& weight, const double& price) :
-    title(title), weight(weight), price(price)
+Dish::Dish(const std::string& title, const double& price, const double& weight) :
+    title(title), price(price), weight(weight)
 {
     if (title.empty()) {
         throw std::invalid_argument("Error..\nTitle cannot be empty");
@@ -25,14 +26,21 @@ std::string Dish::getTile() const
     return title;
 }
 
+double Dish::getWeight() const
+{
+    return weight;
+}
+
 double Dish::getPrice() const
 {
     return price;
 }
 
-double Dish::getWeight() const
+std::string Dish::getAmountString() const
 {
-    return weight;
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(2) << (int)weight;
+    return stream.str() + " " + weight_units;
 }
 
 void Dish::setTitle(const std::string& new_title)
@@ -66,7 +74,7 @@ std::istream& operator >> (std::istream& is, Dish& dish)
     is >> tmp_title >> tmp_weight >> tmp_price;
 
     if (!Dish::checkInfo(tmp_title, tmp_weight, tmp_price)) {
-        throw std::invalid_argument("Human validation error");
+        throw std::invalid_argument("Dish validation error");
     }
 
     dish.title = tmp_title;
@@ -78,8 +86,8 @@ std::istream& operator >> (std::istream& is, Dish& dish)
 
 std::ostream& operator << (std::ostream& os, const Dish& dish) {
     os << std::left << ' ' << std::setw(18) << dish.getTile()
-        << std::left << ' ' << std::setw(10) << dish.getWeight()
-        << std::left << ' ' << std::setw(10) << dish.getPrice()
+        << std::left << ' ' << std::setw(12) << dish.getAmountString()
+        << std::left << ' ' << std::setw(12) << dish.getPrice()
         << std::endl;
 
     return os;
