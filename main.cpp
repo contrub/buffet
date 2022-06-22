@@ -63,12 +63,14 @@ void parseMenu(const std::string& file_name, Menu& menu)
 
         std::string cell;
         Dish* dish;
-        std::string dish_type, dish_title, tmp_dish_price, tmp_dish_weight;
+        std::string dish_type, dish_title, tmp_dish_price, tmp_dish_weight, tmp_add_field;
+        double tmp_double_add_field;
 
         std::getline(lineStream, dish_type, ',');
         std::getline(lineStream, dish_title, ',');
         std::getline(lineStream, tmp_dish_price, ',');
         std::getline(lineStream, tmp_dish_weight, ',');
+        std::getline(lineStream, tmp_add_field, ',');
 
         double dish_price = std::stod(tmp_dish_price);
         double dish_weight = std::stod(tmp_dish_weight);
@@ -76,24 +78,28 @@ void parseMenu(const std::string& file_name, Menu& menu)
         auto it = find(dishTypes.begin(), dishTypes.end(), dish_type);
         int index = it - dishTypes.begin();
 
+        if (index > 0 && index < 5) {
+            tmp_double_add_field = std::stod(tmp_add_field);
+        }
+
         switch (index) {
             case 0:
-                dish = new Cake(dish_title, dish_price, dish_weight);
+                dish = new Cake(dish_title, dish_price, dish_weight, tmp_add_field);
                 break;
             case 1:
-                dish = new Coffee(dish_title, dish_price, dish_weight);
+                dish = new Coffee(dish_title, dish_price, dish_weight, tmp_double_add_field);
                 break;
             case 2:
-                dish = new Cola(dish_title, dish_price, dish_weight);
+                dish = new Cola(dish_title, dish_price, dish_weight, tmp_double_add_field);
                 break;
             case 3:
-                dish = new Pizza(dish_title, dish_price, dish_weight);
+                dish = new Pizza(dish_title, dish_price, dish_weight, tmp_double_add_field);
                 break;
             case 4:
-                dish = new Salad(dish_title, dish_price, dish_weight);
+                dish = new Salad(dish_title, dish_price, dish_weight, tmp_double_add_field);
                 break;
             case 5:
-                dish = new Tea(dish_title, dish_price, dish_weight);
+                dish = new Tea(dish_title, dish_price, dish_weight, tmp_add_field);
                 break;
             default:
                 dish = new Dish();
@@ -116,9 +122,11 @@ int main() {
     Menu buffetMenu;
     parseMenu("menu.csv", buffetMenu);
 
+    srand(time(nullptr));
+
     int visitorsNumber;
     std::vector<Visitor*> visitorsList;
-    vector<Seller*> sellersList = {
+    std::vector<Seller*> sellersList = {
             new Seller("Eduard", "Natanovich", "Luk in", "Buffet", buffetMenu, 134),
             new GreedSeller("Timofei", "Petrovich", "Abram", "Buffet", buffetMenu, 234),
             new InattentiveSeller("Anton", "Grigoriev", "Korolyov", "Buffet", buffetMenu, 42)
@@ -173,7 +181,7 @@ int main() {
                     seller->removeFromBill();
                     break;
                 case 4:
-                    visitor->checkOwnFunds();
+                    visitor->informOwnFunds();
                     break;
                 case 5:
                     seller->informBill();
@@ -181,6 +189,7 @@ int main() {
                 case 6:
                     seller->payBill(visitor);
                     inspector->checkPayment(seller);
+                    seller->createBill();
                     break;
                 default:
                     break;
