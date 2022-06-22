@@ -14,7 +14,7 @@ public:
             );
     Visitor() = default;
 
-    void checkOwnFunds() const;
+    void informOwnFunds();
 
     friend std::istream& operator >> (std::istream& is, Visitor& visitor);
 };

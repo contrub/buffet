@@ -7,7 +7,7 @@ Visitor::Visitor(
         Human(first_name, second_name, last_name, organization, post, own_funds)
 {}
 
-void Visitor::checkOwnFunds() const
+void Visitor::informOwnFunds()
 {
     std::cout << std::string(50, '\n')
               << "My funds - " << getOwnFunds() << "\n";
