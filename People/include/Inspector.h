@@ -18,7 +18,18 @@ public:
             );
     Inspector() = default;
 
+    double calculateTotalPrice(Seller* seller);
+
+    bool isWorthToCheck(Seller* seller);
+    bool isCashConverge(Seller* seller);
+
+    void informSeller(Seller* seller);
+    void informVerifiedBills(Seller* seller);
+    void requestVerifiedBills(Seller* seller);
+    void informPayPenalty(const double& penalty);
+
     void commitCash(Seller* seller);
+    void payPenalty(Seller* seller);
     void checkPayment(Seller* seller);
 private:
     double seller_cash = 0;

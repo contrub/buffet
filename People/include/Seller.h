@@ -24,10 +24,18 @@ public:
 
     void informMenu();
     void informBill();
+    void informNumberedMenu();
+    void informNumberedBill();
+
+    bool isBillEmpty();
+    bool isAbleToPay(Visitor* visitor);
 
     void createBill();
     void completeBill();
     void removeFromBill();
+
+    void takePayment(Visitor* visitor);
+
     virtual void payBill(Visitor* visitor);
 
     friend std::istream& operator >> (std::istream& is, Human& human);

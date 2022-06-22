@@ -66,13 +66,7 @@ void Seller::informBill()
     getchar();
 }
 
-void Seller::createBill()
-{
-    bills.push_back(new Bill());
-    current_bill_number++;
-}
-
-void Seller::completeBill()
+void Seller::informNumberedMenu()
 {
     std::cout << std::string(50, '\n') << std::endl
               << std::endl << '+' << std::string(46, '=') << '+' << std::endl
@@ -86,6 +80,48 @@ void Seller::completeBill()
     for (auto dish : menu.getMenu()) {
         std::cout << std::left << std::string(2, ' ') << std::setw(5) << i++ << *dish;
     }
+}
+
+void Seller::informNumberedBill()
+{
+    std::cout << std::string(50, '\n') << std::endl
+              << std::endl << '+' << std::string(53, '=') << '+' << std::endl
+              << std::left << '|' << std::string(2, ' ') << std::setw(2) << '#' << '|'
+              << std::left << std::string(2, ' ') << std::setw(3) << 'N' << '|'
+              << std::left << std::string(5, ' ') << std::setw(10) << "Title" << '|'
+              << std::left << std::string(2, ' ') << std::setw(8) << "Weight" << '|'
+              << std::left << std::string(5, ' ') << std::setw(10) << "Price" << '|'
+              << std::endl << '+' << std::string(53, '=') << '+' << std::endl;
+
+    int i = 1;
+    for (auto dish : (bills[current_bill_number - 1 ]->getBillList())) {
+        std::cout << std::left << std::string(2, ' ') << std::setw(5) << i++ << dish.second << "  " << *dish.first;
+    }
+}
+
+bool Seller::isBillEmpty()
+{
+    if (bills[current_bill_number - 1]->getTotalPrice() == 0) return true;
+    return false;
+}
+
+bool Seller::isAbleToPay(Visitor* visitor)
+{
+    if (bills[current_bill_number - 1]->getTotalPrice() <= visitor->getOwnFunds()) return true;
+    return false;
+}
+
+void Seller::createBill()
+{
+    if (isBillEmpty()) return;
+
+    bills.push_back(new Bill());
+    current_bill_number++;
+}
+
+void Seller::completeBill()
+{
+    informNumberedMenu();
 
     std::cout << "Choose dish from the list (enter number)\n";
 
@@ -128,30 +164,14 @@ void Seller::completeBill()
 
 void Seller::removeFromBill()
 {
-    if (bills[current_bill_number - 1]->getBillList().empty()) {
+    if (isBillEmpty()) {
         std::cout << std::string(50, '\n') << "Bill list is empty\n";
         std::cout.flush();
         sleep(2);
         return;
     }
 
-    std::cout << "Choose dish from the bill (enter number):\n";
-
-    int i = 1;
-
-    std::cout << std::string(50, '\n') << std::endl
-              << std::endl << '+' << std::string(53, '=') << '+' << std::endl
-              << std::left << '|' << std::string(2, ' ') << std::setw(2) << '#' << '|'
-              << std::left << std::string(2, ' ') << std::setw(3) << 'N' << '|'
-              << std::left << std::string(5, ' ') << std::setw(10) << "Title" << '|'
-              << std::left << std::string(2, ' ') << std::setw(8) << "Weight" << '|'
-              << std::left << std::string(5, ' ') << std::setw(10) << "Price" << '|'
-              << std::endl << '+' << std::string(53, '=') << '+' << std::endl;
-
-
-    for (auto dish : (bills[current_bill_number - 1 ]->getBillList())) {
-        std::cout << std::left << std::string(2, ' ') << std::setw(5) << i++ << dish.second << "  " << *dish.first;
-    }
+    informNumberedBill();
 
     std::cout << "Choose dish from the list (enter number)\n";
 
@@ -188,23 +208,23 @@ void Seller::removeFromBill()
     sleep(2);
 }
 
+void Seller::takePayment(Visitor *visitor)
+{
+    visitor->changeFunds(- bills[current_bill_number - 1]->getTotalPrice());
+    cash_money += bills[current_bill_number - 1]->getTotalPrice();
+    bills[current_bill_number - 1]->changePayStatus();
+}
+
 void Seller::payBill(Visitor* visitor)
 {
     std::string response;
 
     try {
-        if (bills[current_bill_number - 1]->getTotalPrice() == 0) {
-            throw std::invalid_argument("Total bill is empty");
-        }
+        if (isBillEmpty()) throw std::invalid_argument("Total bill is empty");
+        if (!isAbleToPay(visitor)) throw std::invalid_argument("Payment cancelled\nInsufficient funds");
 
-        if (bills[current_bill_number - 1]->getTotalPrice() > visitor->getOwnFunds()) {
-            throw std::invalid_argument("Payment cancelled\nInsufficient funds");
-        }
+        takePayment(visitor);
 
-        visitor->changeFunds(- bills[current_bill_number - 1]->getTotalPrice());
-        cash_money += bills[current_bill_number - 1]->getTotalPrice();
-
-        bills[current_bill_number - 1]->changePayStatus();
         response += "Successfully paid!";
     } catch (const std::exception& ex) {
         response = ex.what();

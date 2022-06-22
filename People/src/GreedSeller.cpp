@@ -13,23 +13,14 @@ void GreedSeller::payBill(Visitor* visitor)
     std::string response;
 
     try {
-        if (bills[current_bill_number - 1]->getTotalPrice() == 0) {
-            throw std::invalid_argument("Total bill is empty");
-        }
-
-        if (bills[current_bill_number - 1]->getTotalPrice() > visitor->getOwnFunds()) {
-            throw std::invalid_argument("Payment cancelled\nInsufficient funds");
-        }
+        if (isBillEmpty()) throw std::invalid_argument("Total bill is empty");
+        if (!isAbleToPay(visitor)) throw std::invalid_argument("Payment cancelled\nInsufficient funds");
 
         visitor->changeFunds(- bills[current_bill_number - 1]->getTotalPrice());
 
-        // double bill_price = bills[current_bill_number - 1]->getTotalPrice();
-        // double stolen_money = stealMoney(bill_price);
-        double stolen_money = stealMoney();
+        takePayment(visitor);
+        stealMoney();
 
-        cash_money += bills[current_bill_number - 1]->getTotalPrice() - stolen_money;
-
-        bills[current_bill_number - 1]->changePayStatus();
         response += "Successfully paid!";
     } catch (const std::exception& ex) {
         response = ex.what();
@@ -42,10 +33,10 @@ void GreedSeller::payBill(Visitor* visitor)
     sleep(3);
 }
 
-double GreedSeller::stealMoney()
+void GreedSeller::stealMoney()
 {
     double stolen_money = bills[current_bill_number - 1]->getTotalPrice() * 0.03;
     changeFunds(stolen_money);
 
-    return stolen_money;
+    cash_money -= stolen_money;
 }

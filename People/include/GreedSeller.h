@@ -14,7 +14,7 @@ public:
     GreedSeller() = default;
 
     void payBill(Visitor* visitor) override;
-    double stealMoney();
+    void stealMoney();
 };
 
 #endif //BUFFET_GREEDSELLER_H

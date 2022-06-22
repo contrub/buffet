@@ -13,7 +13,7 @@ public:
     InattentiveSeller() = default;
 
     void payBill(Visitor* visitor) override;
-    double loseMoney();
+    void loseMoney();
 };
 
 #endif //BUFFET_INATTENTIVESELLER_H
