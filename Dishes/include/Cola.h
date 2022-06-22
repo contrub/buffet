@@ -6,12 +6,19 @@
 class Cola : public Dish
 {
 public:
-    Cola(const std::string& title, const double& price, const double& weight);
+    Cola(
+            const std::string& title, const double& price, const double& weight,
+            const double& sugar_percent, const std::string& weight_units = "ml"
+            );
     Cola() = default;
 
-    std::string getAmountString() const override;
-protected:
-    std::string weight_units = "ml";
+    double getSugarPercent() const;
+private:
+    double sugar_percent;
+
+//    std::string getAmountString() const override;
+//protected:
+//    std::string weight_units = "ml";
 };
 
 

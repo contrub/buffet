@@ -6,14 +6,19 @@
 class Coffee : public Dish
 {
 public:
-    Coffee(const std::string& title, const double& price,const double& weight);
+    Coffee(
+            const std::string& title, const double& price, const double& weight,
+            const double& bitterness, const std::string& weight_units = "ml"
+            );
     Coffee() = default;
 
-     std::string getAmountString() const override;
-protected:
-    std::string weight_units = "ml";
+    double getBitterness() const;
+private:
+    double bitterness;
+
+//     std::string getAmountString() const override;
+//protected:
+//    std::string weight_units = "ml";
 };
-
-
 
 #endif //BUFFET_COFFEE_H

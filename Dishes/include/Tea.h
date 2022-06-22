@@ -6,12 +6,19 @@
 class Tea : public Dish
 {
 public:
-    Tea(const std::string& title, const double& price, const double& weight);
+    Tea(
+            const std::string& title, const double& price, const double& weight,
+            const std::string& grade, const std::string& weight_units = "ml"
+            );
     Tea() = default;
 
-    std::string getAmountString() const override;
-protected:
-    std::string weight_units = "ml";
+    std::string getGrade() const;
+private:
+    std::string grade;
+
+//    std::string getAmountString() const override;
+//protected:
+//    std::string weight_units = "ml";
 };
 
 

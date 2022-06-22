@@ -6,12 +6,19 @@
 class Pizza : public Dish
 {
 public:
-    Pizza(const std::string& title, const double& price, const double& weight);
+    Pizza(
+            const std::string& title, const double& price, const double& weight,
+            const double& meat_percentage, const std::string& weight_units = "cm"
+            );
     Pizza() = default;
 
-    std::string getAmountString() const override;
-protected:
-    std::string weight_units = "cm";
+    double getMeatPercentage() const;
+private:
+    double meat_percentage;
+
+//    std::string getAmountString() const override;
+//protected:
+//    std::string weight_units = "cm";
 };
 
 

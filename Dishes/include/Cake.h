@@ -6,12 +6,19 @@
 class Cake : public Dish
 {
 public:
-    Cake(const std::string& title, const double& price, const double& weight);
+    Cake(
+            const std::string& title, const double& price, const double& weight,
+            const std::string& appearance_form, const std::string& weight_units = "g"
+            );
     Cake() = default;
 
-    std::string getAmountString() const override;
-protected:
-    std::string weight_units = "g";
+    std::string getAppearanceForm() const;
+private:
+    std::string appearance_form;
+
+//    std::string getAmountString() const override;
+//protected:
+//    std::string weight_units = "g";
 };
 
 

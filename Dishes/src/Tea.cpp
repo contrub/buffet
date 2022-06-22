@@ -1,15 +1,22 @@
 #include "Tea.h"
 
-#include <iostream>
-#include <iomanip>
-
-Tea::Tea(const std::string& title, const double& price, const double& weight) :
-        Dish(title, price, weight)
-{}
-
-std::string Tea::getAmountString() const
+Tea::Tea(
+        const std::string& title, const double& price, const double& weight,
+        const std::string& grade, const std::string& weight_units
+         ) :
+        Dish(title, price, weight), grade(grade)
 {
-    std::stringstream stream;
-    stream << std::fixed << std::setprecision(2) << (int)getWeight();
-    return stream.str() + " " + weight_units;
+    setWeightUnits(weight_units);
 }
+
+std::string Tea::getGrade() const
+{
+    return grade;
+}
+
+//std::string Tea::getAmountString() const
+//{
+//    std::stringstream stream;
+//    stream << std::fixed << std::setprecision(2) << (int)getWeight();
+//    return stream.str() + " " + weight_units;
+//}
