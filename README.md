@@ -40,17 +40,15 @@ cmake --build .
 5. Prepare the menu CSV file with the following format before running the program.
 
 <details> <summary>Click to expand CSV file format description</summary>
+
 Each line in the CSV file should have 5 comma-separated fields: DishType,Title,Price,Weight,AdditionalField
 - DishType: one of Cake, Coffee, Cola, Pizza, Salad, Tea
 - Title: the dish name (string)
 - Price: price as a decimal number
 - Weight: weight as a decimal number
-
-AdditionalField:
-
-For Cake and Tea: a descriptive string (e.g., flavor, type)
-
-For Coffee, Cola, Pizza, Salad: a numeric value (e.g., caffeine amount, calories)
+- AdditionalField:
+  - For Cake and Tea: a descriptive string (e.g., flavor, type)
+  - For Coffee, Cola, Pizza, Salad: a numeric value (e.g., caffeine amount, calories)
 
 Example:
 
