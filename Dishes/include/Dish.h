@@ -17,6 +17,7 @@ public:
     virtual std::string getAmountString() const;
 
     void setTitle(const std::string& new_title);
+    void setWeightUnits(const std::string& new_weight_units);
     void setWeight(const double& new_weight);
     void setPrice(const double& new_price);
 

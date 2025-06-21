@@ -48,6 +48,11 @@ void Dish::setTitle(const std::string& new_title)
     this->title = new_title;
 }
 
+void Dish::setWeightUnits(const std::string &new_weight_units) {
+    this->weight_units = new_weight_units;
+}
+
+
 void Dish::setWeight(const double& new_weight)
 {
     this->weight = new_weight;
